@@ -6,6 +6,9 @@ class Object
         return RBASIC(self)->klass;
       }
     }
+  end
+
+  inline do |builder|
     #hack porque una include class no tiene clase?? ni siquiera responde a __send__
     #true si klass es una include class, false en cualquier otro caso
     builder.c %{
