@@ -9,7 +9,7 @@ Implemented so far
 * Access include classes (ICLASS).
 * Access the attached object of a singleton class.
 * Check if a class is a singleton class.
-* Check if a class is a include class.
+* Check if a class is an include class.
 
 Requirements
 ------------
