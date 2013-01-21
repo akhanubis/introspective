@@ -1,6 +1,6 @@
-#al parecer una instancia include class no responde a ningun metodo
-#asi que tengo que pasarla como parámetro en metodos de otra clase
-class IClassAnalizer
+#al parecer una instancia include class no responde a ningun método
+#así que tengo que pasarla como parámetro en métodos de otra clase para poder trabajarla
+module IClassAnalizer
   inline do |builder|
     #true si klass es una include class, false en cualquier otro caso
     builder.c_singleton %{
@@ -14,8 +14,27 @@ class IClassAnalizer
   inline do |builder|
     #devuelve la verdadera clase de self (sin ignorar singleton o include classes)
     builder.c_singleton %{
-      VALUE get_klass(VALUE iklass) {
+      VALUE klass(VALUE iklass) {
         return RBASIC(iklass)->klass;
+      }
+    }
+  end
+
+  inline do |builder|
+    #devuelve la verdadera superclase de self (sin ignorar singleton o include classes)
+    builder.c_singleton %{
+			VALUE zuperclass(VALUE iklass) {
+        return RCLASS_SUPER(iklass);
+      }
+		}
+  end
+
+  inline do |builder|
+    #devuelve true si ambos parámetros representados por punteros apuntan al mismo espacio de memoria
+    builder.c_singleton %{
+      VALUE same_pointer(VALUE a, VALUE b) {
+        if (a == b) return Qtrue;
+				else return Qfalse;
       }
     }
   end

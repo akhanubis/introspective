@@ -2,25 +2,27 @@ class Object
   inline do |builder|
     #devuelve la verdadera clase de self (sin ignorar singleton o include classes)
     builder.c %{
-      VALUE get_klass() {
+      VALUE klass() {
         return RBASIC(self)->klass;
       }
     }
   end
 
-  def nclass(index)
+  def nth_class(index)
     a = self
-    index.times do
-      a = a.singleton_class
-    end
+    index.times {a = a.class}
     a
   end
 
-  def nklass(index)
+  def nth_singleton_class(index)
     a = self
-    index.times do
-      a = a.get_klass
-    end
+    index.times {a = a.singleton_class}
+    a
+  end
+
+  def nth_klass(index)
+    a = self
+    index.times {a = a.klass}
     a
   end
 end

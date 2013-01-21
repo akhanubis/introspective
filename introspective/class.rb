@@ -1,11 +1,7 @@
 class Class
+  include Common::Zuperclass
+
   inline do |builder|
-    #devuelve la verdadera superclase de self (sin ignorar singleton o include classes)
-    builder.c %{
-			VALUE get_super() {
-        return RCLASS_SUPER(self);
-      }
-		}
     #devuelve el objeto attacheado a self o un mensaje de error si self no es una singleton class
     builder.c %{
 			VALUE attached_object() {
@@ -26,19 +22,15 @@ class Class
     attached_object.object_id
   end
 
-  def nsuper(index)
+  def nth_superclass(index)
     a = self
-    index.times do
-      a = a.superclass
-    end
+    index.times {a = a.superclass}
     a
   end
 
-  def nzuper(index)
+  def nth_zuperclass(index)
     a = self
-    index.times do
-      a = a.get_super
-    end
+    index.times {a = a.zuperclass}
     a
   end
 end
