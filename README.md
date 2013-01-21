@@ -104,7 +104,7 @@ irb(main):028:0> String.nklass(13)
 irb(main):079:0> Class.nklass(500)
 => #<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:Class>>>>>>>>>>>
 ```
-Finally, lets check one more thing. When we created the meta^10 class of String, we force the creation of the meta^11class of String and the metaclasses of Class up to 11 (and the ones of Class' ancestors Module, Object, etc). So, the meta^11class of Class should have the meta^10class of Class as the attached_object. And because the meta^500class of Class is the meta^11class of Class (unless we create the 490 metaclasses between them), the meta^500class of Class should have the meta^10class of Class as the attached_object  
+Finally, lets check one more thing. When we created the meta^10 class of String, we force the creation of the meta^11class of String and the metaclasses of Class up to 11 (and the ones of Class' ancestors Module, Object, etc). So, the meta^11class of Class should have the meta^10class of Class as the attached_object. And because the meta^500class of Class is the meta^11class of Class (unless we create the 490 metaclasses between them), the meta^500class of Class should also have the meta^10class of Class as the attached_object  
 ```ruby
 irb(main):082:0> Class.nklass(10) == Class.nklass(11).attached_object
 => true
