@@ -1,0 +1,20 @@
+GIT
+  remote: https://github.com/ryanlecompte/method_locator
+  revision: 631119e0d90f3d019f099ead873630187cf3cee2
+  specs:
+    method_locator (0.0.4)
+
+GEM
+  specs:
+    RubyInline (3.12.0)
+      ZenTest (~> 4.3)
+    ZenTest (4.8.3)
+    spanish_pluralizer (1.0.0)
+
+PLATFORMS
+  x86-mingw32
+
+DEPENDENCIES
+  RubyInline (~> 3.12.0)
+  method_locator!
+  spanish_pluralizer

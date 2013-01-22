@@ -1,6 +1,6 @@
 require 'rubygems'
-require 'inline'
-require 'method_locator'
+require 'bundler'
+Bundler.require
 
 ENV['PATH'] = "c:\\MinGW\\bin;" + ENV['PATH'] unless ENV['PATH']["c:\\MinGW\\bin;"]
 
