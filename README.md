@@ -27,7 +27,7 @@ irb(main):007:0> String.class
 ```
 The class of String (in this case, it is its singleton class)
 ```ruby
-irb(main):008:0> String.get_klass
+irb(main):008:0> String.klass
 => #<Class:String>
 ```
 The real superclass of String (goes up in the ancestors chain until it finds a normal class (not singleton, not include))
@@ -37,7 +37,7 @@ irb(main):009:0> String.superclass
 ```
 String includes Comparable, so String's superclass is actually an include class of Comparable
 ```ruby
-irb(main):010:0> String.get_super
+irb(main):010:0> String.zuperclass
 (Object doesn't support #inspect)
 =>
 ```
@@ -48,67 +48,67 @@ irb(main):011:0> IClassAnalizer.is_iclass(String)
 ```
 The superclass of String was an include class of Comparable
 ```ruby
-irb(main):012:0> IClassAnalizer.is_iclass(String.get_super)
+irb(main):012:0> IClassAnalizer.is_iclass(String.zuperclass)
 => true
 ```
 The class of an include class is the module which it includes
 ```ruby
-irb(main):013:0> IClassAnalizer.get_klass(String.get_super)
+irb(main):013:0> IClassAnalizer.klass(String.zuperclass)
 => Comparable
 ```
 From now on I will refer to metaclass as singleton class of class(an instance of Class). Metaclass is an special type of singleton class. 
 The class of the class of String (aka the metametaclass of String, aka the class of the metaclass of String)
 ```ruby
-irb(main):017:0> String.nklass(2)
+irb(main):017:0> String.nth_klass(2)
 => #<Class:#<Class:String>>
 ```
 The class of the class of the class of String (aka the metametametaclass of String). Here is something interesting: every class has a metaclass, so in theory there are infinit metaclasses of each class. Ruby tackles this with lazy creation of metaclasses, but because we aren't triggering this creation using Ruby's methods << or singleton_class, we can see that the class of the last "created" metaclass of a class is the metaclass of Class of the same order (check comment in class.c line 321). In this case, the class of the metametametaclass of String is the metametametaclass of Class
 ```ruby
-irb(main):018:0> String.nklass(3)
+irb(main):018:0> String.nth_klass(3)
 => #<Class:#<Class:Class>>
-irb(main):019:0> String.nklass(4)
+irb(main):019:0> String.nth_klass(4)
 ```
 Finally, the class of the last "created" meta^nclass of Class is itself 
 ```ruby
 => #<Class:#<Class:#<Class:Class>>>
-irb(main):020:0> String.nklass(5)
+irb(main):020:0> String.nth_klass(5)
 => #<Class:#<Class:#<Class:Class>>>
-irb(main):021:0> String.nklass(20)
+irb(main):021:0> String.nth_klass(20)
 => #<Class:#<Class:#<Class:Class>>>
-irb(main):022:0> String.nklass(5).object_id
+irb(main):022:0> String.nth_klass(5).object_id
 => 19801524
-irb(main):023:0> String.nklass(20).object_id
+irb(main):023:0> String.nth_klass(20).object_id
 => 19801524
 ```
 Lets see what happens when we actually create the meta^nclasses of String until n = 10 by calling String.singleton_class.singleton_class.singleton_class.etc
 ```ruby
-irb(main):024:0> String.nclass(10)
+irb(main):024:0> String.nth_class(10)
 => #<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:String>>>>>>>>>>
-irb(main):025:0> String.nklass(10)
+irb(main):025:0> String.nth_klass(10)
 => #<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:String>>>>>>>>>>
 ```
 To ensure class hierarchy integrity, Ruby creates the metaclass of a class when the class is created. This also applies to metaclasses, so by creating the meta^10class we force the creation of the meta^11class (we also force the creation of the meta^nclasses for the superclasses)
 ```ruby
-irb(main):026:0> String.nklass(11)
+irb(main):026:0> String.nth_klass(11)
 => #<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:String>>>>>>>>>>>
 ```
 But, as we expected, the meta^11class of String was created with its class pointing to the meta^11class of Class 
 ```ruby
-irb(main):027:0> String.nklass(12)
+irb(main):027:0> String.nth_klass(12)
 => #<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:Class>>>>>>>>>>>
 ```
 And the meta^11class of Class keeps being self referential
 ```ruby
-irb(main):028:0> String.nklass(13)
+irb(main):028:0> String.nth_klass(13)
 => #<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:Class>>>>>>>>>>>
-irb(main):079:0> Class.nklass(500)
+irb(main):079:0> Class.nth_klass(500)
 => #<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:#<Class:Class>>>>>>>>>>>
 ```
 Finally, lets check one more thing. When we created the meta^10 class of String, we force the creation of the meta^11class of String and the metaclasses of Class up to 11 (and the ones of Class' ancestors Module, Object, etc). So, the meta^11class of Class should have the meta^10class of Class as the attached_object. And because the meta^500class of Class is the meta^11class of Class (unless we create the 490 metaclasses between them), the meta^500class of Class should also have the meta^10class of Class as the attached_object  
 ```ruby
-irb(main):082:0> Class.nklass(10) == Class.nklass(11).attached_object
+irb(main):082:0> Class.nth_klass(10) == Class.nth_klass(11).attached_object
 => true
-irb(main):083:0> Class.nklass(10) == Class.nklass(500).attached_object
+irb(main):083:0> Class.nth_klass(10) == Class.nth_klass(500).attached_object
 => true
 ```
 
