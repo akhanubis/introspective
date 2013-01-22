@@ -5,13 +5,22 @@ A set of Ruby methods coded in C for getting access to structs and vars used by 
 
 Implemented so far
 ------------
-* Access nth order singleton classes and metaclasses bypassing the Ruby method singleton_class and thus breaking integrity.
-* Access include classes (ICLASS).
-* Access the attached object of a singleton class.
-* Access the class of an include class.
-* Check if a class is a singleton class.
-* Check if a class is an include class.
-
+* an_object.nth_klass(n) Access nth order singleton classes and metaclasses bypassing the Ruby method singleton_class and thus breaking integrity.
+* an_object.nth_class(n) Access nth order singleton classes and metaclasses invoking .class n times (ignores singleton classes).
+* an_object.nth_singleton_class(n) Access nth order singleton classes and metaclasses invoking .singleton_class n times.
+* an_object.klass Get the actual class of an_object: RBASIC(an_object)->klass.
+* a_class.zuperclass Get the actual superclass of a_class (can retrieve singleton and include classes).
+* a_module.zuperclass Get the actual superclass of a_module (it is always false unless a_module includes another_module in which case it is an include class of another_module).
+* a_class.nth_superclass(n) Access nth order superclass of a_class invoking .superclass n times (ignores singleton classes and instead of showing include classes it shows the modules included).
+* a_class.nth_zuperclass(n) Access nth order superclass of a_class invoking .zuperclass n times (doesn't ignore singleton or include classes).
+* a_class.attached_object Get the attached object of a_class (raise an error if a_class is not a singleton class). 
+* a_class.attached_id a_class.attached_object.object_id.
+* a_class.is_singleton Return true if a_class is a singleton_class, otherwise false.
+* IClassAnalizer.is_iclass(a_class) Return true if a_class is an include class.
+* IClassAnalizer.klass(an_inclass) Get the actual class of an_iclass (it should return the module included by an_iclass). 
+* IClassAnalizer.zuperclass(an_iclass) Get the actual superclass of an_iclass.
+* IClassAnalizer.same_pointer(a_pointer, another_pointer) Return true if a_pointar == another_pointer.
+* 
 Usage and some insights
 ------------
 
